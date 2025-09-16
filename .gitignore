@@ -1,0 +1,49 @@
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore backup/swap files from editors
+*~
+*.swp
+*.swo
+
+# Ignore temporary build or export files
+*.tmp
+*.log
+
+# Ignore Office exports (keep source Markdown tracked)
+*.doc
+*.docx
+*.pdf
+*.ppt
+*.pptx
+*.xls
+*.xlsx
+
+# Ignore image exports if source is tracked
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Allow vector/source diagram formats
+!*.drawio
+!*.svg
+
+# Ignore zipped archives
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+# Ignore IDE/project metadata
+.vscode/
+.idea/
+*.iml
+
+vandalism-env/
+
+# Ignore node/python stuff (in case you script exports later)
+node_modules/
+__pycache__/
+*.pyc
