@@ -47,3 +47,4 @@ vandalism-env/
 node_modules/
 __pycache__/
 *.pyc
+.*~lock.*
