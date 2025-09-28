@@ -1,0 +1,9 @@
+ID,Risk,Category,Mitigation
+1,Privacy concerns (CCTV fears),Privacy,"Only trigger when cubicle empty; delete “known good” images; review only if vandalism suspected"
+2,Data retention & misuse,Privacy/Legal,"Instant deletion unless flagged; false positives deleted; audit logs; DPO/DPIA review"
+3,False positives / technical errors,Technical,"AI tuned carefully; human verification; continuous training"
+4,Vandalism of system hardware,Technical,"Vandal-resistant housings; decentralised edge units; anti-tamper alerts"
+5,Public trust / reputational risk,Outreach,"Transparent comms; Tina analogy; community engagement; social enterprise framing"
+6,Legal / regulatory compliance,Legal,"DPIA; ICO consultation if needed; privacy-by-design; anonymisation and secure processing"
+7,Funding & sustainability,Funding,"Grants + crowdfunding; social enterprise model; phased rollout"
+8,Technical scalability,Technical,"Modular design; standardised hardware/software; pilot stress-testing"
