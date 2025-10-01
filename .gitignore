@@ -49,3 +49,10 @@ node_modules/
 __pycache__/
 *.pyc
 .*~lock.*
+
+## Wordpress ignores
+# Ignore SSL keys and certs only
+website/ssl/*.crt
+website/ssl/*.key
+website/ssl/*.pem
+

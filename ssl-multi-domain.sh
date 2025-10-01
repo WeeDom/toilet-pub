@@ -73,7 +73,8 @@ setup_directories() {
     chmod -R 755 "$SSL_BASE_DIR"
 
     log "SSL directory structure created at $SSL_BASE_DIR"
-}# Install certbot if needed
+}
+# Install certbot if needed
 install_certbot() {
     if ! command -v certbot &> /dev/null; then
         log "Installing certbot..."
@@ -104,7 +105,8 @@ start_nginx_containers() {
         cd "$WEBSITE_STACK"
         docker-compose up -d nginx 2>/dev/null || true
     fi
-}# Initialize certificates for all domains
+}
+# Initialize certificates for all domains
 init_certificates() {
     log "Initializing SSL certificates for all Guard-e-Loo domains"
     info "Domains: $ALL_DOMAINS"
@@ -172,7 +174,8 @@ renew_certificates() {
     fi
 
     log "Certificate renewal completed successfully!"
-}# Show certificate status
+}
+# Show certificate status
 show_status() {
     log "SSL Certificate Status:"
     echo ""
@@ -210,7 +213,8 @@ fi
 EOF
 
     chmod +x "$SSL_BASE_DIR/reload-nginx.sh"
-}# Main script logic
+}
+# Main script logic
 case "${1:-}" in
     "init")
         check_root
@@ -249,3 +253,4 @@ case "${1:-}" in
         exit 1
         ;;
 esac
+
