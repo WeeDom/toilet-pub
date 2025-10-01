@@ -40,6 +40,7 @@ Thumbs.db
 .vscode/
 .idea/
 *.iml
+*.code-workspace
 
 vandalism-env/
 
