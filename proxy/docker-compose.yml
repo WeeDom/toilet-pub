@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  nginx-proxy:
+    image: nginx:alpine
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /opt/guard-e-loo-ssl/webroot:/opt/guard-e-loo-ssl/webroot:ro
+    networks:
+      - production_default
+      - staging_default
+      - proxy_network
+
+networks:
+  production_default:
+    external: true
+  staging_default:
+    external: true
+  proxy_network:
+    driver: bridge
