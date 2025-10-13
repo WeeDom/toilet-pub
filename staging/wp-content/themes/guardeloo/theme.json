@@ -1,0 +1,91 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 2,
+  "settings": {
+    "color": {
+      "palette": [
+        {
+          "slug": "gel-honey",
+          "color": "#f4b942",
+          "name": "Honey"
+        },
+        {
+          "slug": "gel-terracotta",
+          "color": "#d46b28",
+          "name": "Terracotta"
+        },
+        {
+          "slug": "gel-brown",
+          "color": "#4b2e05",
+          "name": "Deep Brown"
+        },
+        {
+          "slug": "gel-cream",
+          "color": "#fff7e6",
+          "name": "Cream"
+        },
+        {
+          "slug": "gel-dark",
+          "color": "#1e1505",
+          "name": "Dark Umber"
+        }
+      ]
+    },
+    "typography": {
+      "fontFamilies": [
+        {
+          "fontFamily": "system-ui, sans-serif",
+          "name": "System Sans",
+          "slug": "system-sans"
+        }
+      ],
+      "fontSizes": [
+        { "slug": "small", "size": "0.875rem", "name": "Small" },
+        { "slug": "medium", "size": "1rem", "name": "Medium" },
+        { "slug": "large", "size": "1.5rem", "name": "Large" },
+        { "slug": "xlarge", "size": "2.25rem", "name": "Extra Large" }
+      ]
+    },
+    "spacing": {
+      "units": ["px", "em", "rem", "%"],
+      "blockGap": "1.25rem"
+    }
+  },
+  "styles": {
+    "color": {
+      "background": "var(--wp--preset--color--gel-cream)",
+      "text": "var(--wp--preset--color--gel-brown)"
+    },
+    "elements": {
+      "link": {
+        "color": {
+          "text": "var(--wp--preset--color--gel-terracotta)"
+        }
+      },
+      "heading": {
+        "color": {
+          "text": "var(--wp--preset--color--gel-brown)"
+        }
+      }
+    },
+    "blocks": {
+      "core/navigation": {
+        "color": {
+          "text": "var(--wp--preset--color--gel-brown)"
+        },
+        "typography": {
+          "fontSize": "medium",
+          "fontWeight": "600"
+        }
+      },
+      "core/site-title": {
+        "typography": {
+          "fontWeight": "700"
+        },
+        "color": {
+          "text": "var(--wp--preset--color--gel-brown)"
+        }
+      }
+    }
+  }
+}
