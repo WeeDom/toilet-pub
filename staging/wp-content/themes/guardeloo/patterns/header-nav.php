@@ -7,6 +7,10 @@
  */
 ?>
 
+<!--
+How it works (with flowcharts) GDPR / Privacy / CCTV explanation Incident workflow Council/pilot adoption info FAQs Contact
+-->
+
 <!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"1rem","bottom":"1rem"}}},"backgroundColor":"gel-honey"} -->
 <div class="wp-block-group alignfull has-gel-honey-background-color has-background" style="padding-top:1rem;padding-bottom:1rem">
   <!-- wp:columns {"align":"wide","verticalAlignment":"center","style":{"spacing":{"blockGap":"1rem"}}} -->
