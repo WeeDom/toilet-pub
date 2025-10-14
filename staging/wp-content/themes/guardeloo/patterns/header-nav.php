@@ -18,7 +18,7 @@ How it works (with flowcharts) GDPR / Privacy / CCTV explanation Incident workfl
     <!-- wp:column {"verticalAlignment":"center","width":"25%"} -->
     <div class="wp-block-column is-vertically-aligned-center" style="flex-basis:25%">
       <!-- wp:image {"sizeSlug":"full","linkDestination":"none"} -->
-      <figure class="wp-block-image size-full">
+      <figure class="wp-block-image size-medium">
         <img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/images/maggie.png' ); ?>" alt="Guard-e-Loo Logo" />
       </figure>
       <!-- /wp:image -->

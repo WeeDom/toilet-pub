@@ -1,5 +1,10 @@
 FROM wordpress:php8.2-fpm
 
+ARG USER_ID=1000
+ARG GROUP_ID=1000
+
+RUN usermod -u ${USER_ID} www-data && groupmod -g ${GROUP_ID} www-data
+
 # Install PostgreSQL extension
 RUN apt-get update && apt-get install -y less mariadb-client \
     libpq-dev \
