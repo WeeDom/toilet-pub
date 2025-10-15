@@ -9,6 +9,7 @@ services:
       MYSQL_USER: wpuser_staging
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-wppass_staging}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpass_staging}
+      MYSQL_SSL_MODE: DISABLED
     volumes:
       - db_staging_data:/var/lib/mysql
       - ./backups:/backups
@@ -23,12 +24,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    entrypoint: init-wordpress.sh
     restart: always
     depends_on:
       db:
         condition: service_healthy
     environment:
-      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_HOST: db:3306?ssl=false
       WORDPRESS_DB_NAME: wordpress_staging
       WORDPRESS_DB_USER: wpuser_staging
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD:-wppass_staging}
@@ -37,6 +39,7 @@ services:
         define('WP_SITEURL', 'https://staging.guard-e-loo.co.uk');
         define('FORCE_SSL_ADMIN', true);
         define('WP_MEMORY_LIMIT', '256M');
+        define( 'MYSQL_CLIENT_FLAGS', 0 );
     volumes:
       - ./wp-content:/var/www/html/wp-content
       - wp_staging_data:/var/www/html

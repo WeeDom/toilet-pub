@@ -16,6 +16,8 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 
 # Copy the PostgreSQL database drop-in
 COPY db.php /var/www/html/wp-content/
+COPY init-wordpress.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/init-wordpress.sh
 
 # Set proper permissions
 RUN chown -R www-data:www-data /var/www/html/
