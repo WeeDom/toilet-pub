@@ -1,125 +1,63 @@
-# /gel/main.py - Production Ready Guard-e-Loo Capture System
-import cv2
-import os
-import json
+#! /usr/bin/env python
+
+# main.py
 import time
-import platform
-import numpy as np
-from cryptography.hazmat.primitives import serialization, hashes, padding as sym_padding
-from cryptography.hazmat.primitives.asymmetric import padding
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from cryptography.hazmat.backends import default_backend
+import cv2
+from datetime import datetime
+from camera_stream import CameraStream
 
-# === STEP 1: Load RSA public key (Police Scotland) ===
-KEY_FILE = "./police_key.key"
-ENCRYPTED_OUTPUT = "./capture_encrypted.bin"
-NON_ENCRYPTED_PREVIEW = "./capture_preview.jpg"
-if not os.path.exists(KEY_FILE):
-    raise FileNotFoundError(f"❌ Missing public key at: {KEY_FILE}")
+TABLET_URL = "http://172.23.190.183:8080/video"
+MOTION_THRESHOLD = 100000  # Adjust to taste
+CHECK_INTERVAL = 0.5         # Seconds between frame checks
+SLEEP_AFTER_MOTION = 120   # 2 minutes in seconds
 
-with open(KEY_FILE, "rb") as f:
-    public_key = serialization.load_pem_public_key(f.read())
+def detect_motion(prev, curr):
+    g1 = cv2.cvtColor(prev, cv2.COLOR_BGR2GRAY)
+    g2 = cv2.cvtColor(curr, cv2.COLOR_BGR2GRAY)
+    b1 = cv2.GaussianBlur(g1, (21, 21), 0)
+    b2 = cv2.GaussianBlur(g2, (21, 21), 0)
+    delta = cv2.absdiff(b1, b2)
+    thresh = cv2.threshold(delta, 25, 255, cv2.THRESH_BINARY)[1]
+    motion_score = thresh.sum()
+    return motion_score > MOTION_THRESHOLD
 
-# === STEP 2: Capture one frame from the camera ===
-cam = cv2.VideoCapture(0)
-if not cam.isOpened():
-    raise RuntimeError("❌ Could not open camera. Check /dev/video0 mapping!")
+def main():
+    motion_flag = False
+    tablet_cam = CameraStream(TABLET_URL, label="entry")
 
-ret, frame = cam.read()
-cam.release()
+    print("📡 Starting motion monitoring using tablet cam...")
 
-if not ret:
-    raise RuntimeError("❌ Failed to capture image from camera.")
+    prev_frame = None
 
-print("✅ Captured frame from camera")
+    while True:
+        if motion_flag:
+            print("⏸️ Motion detected, stream closed. Waiting 2 minutes...")
+            time.sleep(SLEEP_AFTER_MOTION)
+            motion_flag = False
+            tablet_cam = CameraStream(TABLET_URL, label="entry")
+            prev_frame = None
+            continue
 
-# === STEP 3: Convert image to JPEG bytes ===
-_, buffer = cv2.imencode('.jpg', frame)
-image_bytes = buffer.tobytes()
-print(f"✅ Converted image to JPEG bytes ({len(image_bytes)} bytes)")
-with open("./capture.jpg", "wb") as f:
-    f.write(image_bytes)
-print("✅ Wrote /gel/capture.jpg for reference")
-# === STEP 4: Create forensic metadata ===
-metadata = {
-    "timestamp": time.time(),
-    "timestamp_iso": time.strftime('%Y-%m-%d %H:%M:%S UTC', time.gmtime()),
-    "device_id": "guard-e-loo-001",  # Could be MAC address or serial number
-    "system_info": {
-        "platform": platform.platform(),
-        "node": platform.node(),
-        "python_version": platform.python_version()
-    },
-    "image_info": {
-        "original_size": len(image_bytes),
-        "format": "JPEG",
-        "capture_method": "opencv_camera"
-    },
-    "encryption_info": {
-        "method": "hybrid_rsa_aes",
-        "rsa_key_size": 2048,
-        "aes_key_size": 256,
-        "aes_mode": "CBC"
-    }
-}
+        ret, frame = tablet_cam.read()
+        if not ret:
+            print("⚠️ Could not read from tablet cam. Retrying...")
+            time.sleep(1)
+            continue
 
-print(f"✅ Created forensic metadata")
+        if prev_frame is None:
+            prev_frame = frame
+            time.sleep(CHECK_INTERVAL)
+            continue
 
-# === STEP 5: Hybrid Encryption (Production Ready) ===
-# Generate random AES key and IV
-aes_key = os.urandom(32)  # 256-bit AES key
-aes_iv = os.urandom(16)   # 128-bit IV for CBC mode
+        if detect_motion(prev_frame, frame):
+            print(f"🚨 Motion detected at {datetime.now().strftime('%H:%M:%S')}")
+            motion_flag = True
+            tablet_cam.release()
+        else:
+            print(f"✅ No motion. [{datetime.now().strftime('%H:%M:%S')}]")
 
-print(f"✅ Generated AES key ({len(aes_key)} bytes) and IV ({len(aes_iv)} bytes)")
+        prev_frame = frame
+        time.sleep(CHECK_INTERVAL)
 
-# Create payload with metadata and image
-payload = {
-    "metadata": metadata,
-    "image_data": image_bytes.hex()  # Convert to hex string for JSON serialization
-}
-payload_json = json.dumps(payload).encode('utf-8')
-
-print(f"✅ Created payload with metadata ({len(payload_json)} bytes)")
-
-# Encrypt payload with AES
-# Add PKCS7 padding
-padder = sym_padding.PKCS7(128).padder()
-padded_payload = padder.update(payload_json) + padder.finalize()
-
-cipher = Cipher(algorithms.AES(aes_key), modes.CBC(aes_iv), backend=default_backend())
-encryptor = cipher.encryptor()
-encrypted_payload = encryptor.update(padded_payload) + encryptor.finalize()
-
-print(f"✅ Encrypted payload with AES ({len(encrypted_payload)} bytes)")
-
-# Encrypt AES key with RSA
-encrypted_aes_key = public_key.encrypt(
-    aes_key,
-    padding.OAEP(
-        mgf=padding.MGF1(algorithm=hashes.SHA256()),
-        algorithm=hashes.SHA256(),
-        label=None
-    )
-)
-
-print(f"✅ Encrypted AES key with RSA ({len(encrypted_aes_key)} bytes)")
-
-# === STEP 6: Create encrypted capture file ===
-# File format: [encrypted_aes_key (256 bytes)] + [aes_iv (16 bytes)] + [encrypted_payload]
-capture_data = encrypted_aes_key + aes_iv + encrypted_payload
-
-with open("./capture_encrypted.bin", "wb") as f:
-    f.write(capture_data)
-
-print(f"🔒 Production encrypted capture written to /gel/capture_encrypted.bin")
-print(f"   Total size: {len(capture_data)} bytes")
-print(f"   - Encrypted AES key: {len(encrypted_aes_key)} bytes")
-print(f"   - AES IV: {len(aes_iv)} bytes")
-print(f"   - Encrypted payload: {len(encrypted_payload)} bytes")
-
-# === STEP 7: Save unencrypted reference files ===
-with open("./capture_metadata.json", "w") as f:
-    json.dump(metadata, f, indent=2)
-
-print("✅ Saved metadata reference to /gel/capture_metadata.json")
-print("🔐 Full image + metadata encrypted and ready for police decryption!")
+if __name__ == "__main__":
+    main()
