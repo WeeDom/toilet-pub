@@ -1,5 +1,6 @@
 #include "esp_camera.h"
 #include <WiFi.h>
+#include <time.h>
 
 // ===========================
 // Select camera model in board_config.h
@@ -11,6 +12,13 @@
 // ===========================
 const char *ssid = "Galaxy A718AF4";
 const char *password = "b0ll0cks";
+
+// ===========================
+// Time configuration
+// ===========================
+const char* ntpServer = "pool.ntp.org";
+const long gmtOffset_sec = 0;        // GMT+0 for UK
+const int daylightOffset_sec = 3600; // 1 hour for BST
 
 void startCameraServer();
 void setupLedFlash();
@@ -117,9 +125,21 @@ void setup() {
   Serial.println("");
   Serial.println("WiFi connected");
 
+  // Initialize and get the time
+  Serial.println("Initializing time...");
+  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+
+  struct tm timeinfo;
+  if(getLocalTime(&timeinfo)){
+    Serial.print("Current time: ");
+    Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+  } else {
+    Serial.println("Failed to obtain time");
+  }
+
   startCameraServer();
 
-  Serial.print("Camera Ready! Use 'http://");
+  Serial.print("Camera 1 Ready! Use 'http://");
   Serial.print(WiFi.localIP());
   Serial.println("' to connect");
 }
