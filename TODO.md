@@ -10,7 +10,12 @@
 - **Story 1.2**: ✅ **COMPLETE** - SSL automation & deployment scripts (`manage.sh`, migration tools)
 - **Story 1.3**: ✅ **COMPLETE** - ESP32 firmware baseline (v0.1.0 deployed, camera operational)
 - **Story 1.4**: ❌ **TODO** - Ansible playbooks for automated server provisioning
-- **Story 1.5**: ❌ **TODO** - ESP32 OTA update capability
+- **Story 1.5**: ❌ **TODO** - Remote Firmware Update Infrastructure
+  - EC2 as CNC (Command & Control)
+  - SSH tunnel: EC2 → Pi Gateway
+  - Pi-based OTA server (HTTP for ESP32s)
+  - Ansible orchestration for multi-site deployments
+- **Story 1.6**: ❌ **TODO** - Test Lab Setup (2 laptops, 1 camera, simulated site)
 
 ### Epic 2: 🎯 Smart Privacy Detection
 **Goal**: Implement PIR-based occupancy detection to disable cameras when toilets are in use

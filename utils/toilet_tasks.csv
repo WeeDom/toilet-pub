@@ -1,0 +1,15 @@
+"Docker-based WordPress dual-stack (production/staging/proxy)","","Done"
+"SSL automation & deployment scripts (`manage.sh`, migration tools)","","Done"
+"ESP32 firmware baseline (v0.1.0 deployed, camera operational)","","Done"
+"Ansible playbooks for automated server provisioning","","New"
+"Remote Firmware Update Infrastructure","- EC2 as CNC (Command & Control)
+- SSH tunnel: EC2 → Pi Gateway
+- Pi-based OTA server (HTTP for ESP32s)
+- Ansible orchestration for multi-site deployments
+","New"
+"Test Lab Setup (2 laptops, 1 camera, simulated site)","","New"
+"Local motion detection (`pi1/main.py`)","","Done"
+"HTTPS/SSL & secure WordPress setup","","Done"
+"Police Public Key Encryption (RSA/ECC for police-only decryption)","","Ready"
+"Dynamic Key Management (Go server, daily refresh, caching)","","Ready"
+"Emergency Key Revocation System (push refresh, <60s response)","","Ready"

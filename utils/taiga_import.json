@@ -1,0 +1,137 @@
+{
+   "project" : {
+      "name" : "Guard-e-Loo",
+      "description" : "Privacy-aware public toilet security system"
+   },
+   "epics" : [
+      {
+         "ref" : 1,
+         "description" : "Complete the production-ready infrastructure foundation",
+         "subject" : " Infrastructure Enhancement",
+         "status" : "Done",
+         "user_stories" : [
+            {
+               "ref" : 1,
+               "description" : "",
+               "subject" : "Docker-based WordPress dual-stack (production/staging/proxy)",
+               "points" : null,
+               "status" : "Done"
+            },
+            {
+               "status" : "Done",
+               "points" : null,
+               "subject" : "SSL automation & deployment scripts (`manage.sh`, migration tools)",
+               "description" : "",
+               "ref" : 2
+            },
+            {
+               "ref" : 3,
+               "description" : "",
+               "subject" : "ESP32 firmware baseline (v0.1.0 deployed, camera operational)",
+               "status" : "Done",
+               "points" : null
+            },
+            {
+               "status" : "New",
+               "points" : null,
+               "subject" : "Ansible playbooks for automated server provisioning",
+               "description" : "",
+               "ref" : 4
+            },
+            {
+               "ref" : 5,
+               "description" : "- EC2 as CNC (Command & Control)\n- SSH tunnel: EC2 → Pi Gateway\n- Pi-based OTA server (HTTP for ESP32s)\n- Ansible orchestration for multi-site deployments\n",
+               "subject" : "Remote Firmware Update Infrastructure",
+               "status" : "New",
+               "points" : null
+            },
+            {
+               "description" : "",
+               "ref" : 6,
+               "status" : "New",
+               "points" : null,
+               "subject" : "Test Lab Setup (2 laptops, 1 camera, simulated site)"
+            }
+         ]
+      },
+      {
+         "subject" : " Smart Privacy Detection",
+         "status" : "In progress",
+         "user_stories" : [],
+         "ref" : 2,
+         "description" : "Implement PIR-based occupancy detection to disable cameras when toilets are in use"
+      },
+      {
+         "user_stories" : [],
+         "status" : "New",
+         "subject" : " Device Communication Layer",
+         "description" : "Enable ESP32 devices to communicate with Pi controllers",
+         "ref" : 3
+      },
+      {
+         "ref" : 4,
+         "description" : "Build Pi-based local controller for camera management",
+         "subject" : " Edge Controller Raspberry Pi",
+         "status" : "New",
+         "user_stories" : [
+            {
+               "subject" : "Local motion detection (`pi1/main.py`)",
+               "points" : null,
+               "status" : "Done",
+               "ref" : 7,
+               "description" : ""
+            }
+         ]
+      },
+      {
+         "user_stories" : [],
+         "status" : "New",
+         "subject" : " Central Management Platform",
+         "description" : "Create cloud-based monitoring and control system",
+         "ref" : 5
+      },
+      {
+         "status" : "Done",
+         "user_stories" : [
+            {
+               "ref" : 8,
+               "description" : "",
+               "subject" : "HTTPS/SSL & secure WordPress setup",
+               "points" : null,
+               "status" : "Done"
+            },
+            {
+               "subject" : "Police Public Key Encryption (RSA/ECC for police-only decryption)",
+               "status" : "Ready",
+               "points" : null,
+               "ref" : 9,
+               "description" : ""
+            },
+            {
+               "status" : "Ready",
+               "points" : null,
+               "subject" : "Dynamic Key Management (Go server, daily refresh, caching)",
+               "description" : "",
+               "ref" : 10
+            },
+            {
+               "points" : null,
+               "status" : "Ready",
+               "subject" : "Emergency Key Revocation System (push refresh, <60s response)",
+               "description" : "",
+               "ref" : 11
+            }
+         ],
+         "subject" : " Security  Production Readiness",
+         "description" : "Implement security measures and reliability features",
+         "ref" : 6
+      },
+      {
+         "ref" : 7,
+         "description" : "Test and validate system performance and reliability",
+         "subject" : " System Validation",
+         "status" : "New",
+         "user_stories" : []
+      }
+   ]
+}
