@@ -4,7 +4,7 @@
 ✅ OpenProject containers running successfully
 ✅ Database initialized with default credentials
 ✅ Nginx proxy configuration added
-✅ SSL certificate script updated for projects.guard-e-loo.co.uk
+✅ SSL certificate script updated for pm.guard-e-loo.co.uk
 
 ## Setup Steps
 
@@ -16,7 +16,7 @@ docker compose ps
 ```
 
 ### 2. Update SSL Certificate
-Add `projects.guard-e-loo.co.uk` to your Let's Encrypt certificate:
+Add `pm.guard-e-loo.co.uk` to your Let's Encrypt certificate:
 
 ```bash
 cd ~/toilet
@@ -55,8 +55,8 @@ docker compose restart nginx-proxy
 ```
 
 ### 6. Access OpenProject
-Once DNS is configured for `projects.guard-e-loo.co.uk`, access:
-- **URL:** https://projects.guard-e-loo.co.uk
+Once DNS is configured for `pm.guard-e-loo.co.uk`, access:
+- **URL:** https://pm.guard-e-loo.co.uk
 - **Default Login:** admin
 - **Default Password:** admin
 
@@ -81,7 +81,7 @@ Once DNS is configured for `projects.guard-e-loo.co.uk`, access:
 ### Nginx Proxy
 - **File:** `~/toilet/proxy/nginx.conf`
 - **Upstream:** `openproject_app:80`
-- **Domain:** `projects.guard-e-loo.co.uk`
+- **Domain:** `pm.guard-e-loo.co.uk`
 - **SSL:** Shared certificate with other Guard-e-Loo domains
 
 ## Troubleshooting
@@ -128,7 +128,7 @@ cd ~/toilet/openproject && docker compose logs -f
 
 ## Next Steps
 1. ✅ OpenProject running locally
-2. ⏳ Update SSL certificate with `projects.guard-e-loo.co.uk`
+2. ⏳ Update SSL certificate with `pm.guard-e-loo.co.uk`
 3. ⏳ Restart nginx proxy
 4. ⏳ Configure DNS for projects.guard-e-loo.co.uk
 5. ⏳ Test HTTPS access
