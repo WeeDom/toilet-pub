@@ -8,7 +8,7 @@ set -e
 
 # Domain Configuration
 MAIN_DOMAIN="guard-e-loo.co.uk"
-ALL_DOMAINS="guard-e-loo.co.uk,www.guard-e-loo.co.uk,op.guard-e-loo.co.uk,staging.guard-e-loo.co.uk,op.guard-e-loo.co.uk pm.guard-e-loo.co.uk"
+ALL_DOMAINS="guard-e-loo.co.uk,www.guard-e-loo.co.uk,op.guard-e-loo.co.uk,staging.guard-e-loo.co.uk,op.guard-e-loo.co.uk,pm.guard-e-loo.co.uk"
 EMAIL="admin@guard-e-loo.co.uk"
 
 # Paths - centralized SSL storage
