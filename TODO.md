@@ -16,6 +16,11 @@
   - Pi-based OTA server (HTTP for ESP32s)
   - Ansible orchestration for multi-site deployments
 - **Story 1.6**: ❌ **TODO** - Test Lab Setup (2 laptops, 1 camera, simulated site)
+- **Story 1.7**: ❌ **TODO** - OpenProject Installation & Integration
+  - Docker-based OpenProject on same server
+  - HTTPS access via `projects.guard-e-loo.co.uk`
+  - Integrated with nginx proxy and `manage.sh`
+  - PostgreSQL database with automated backups
 
 ### Epic 2: 🎯 Smart Privacy Detection
 **Goal**: Implement PIR-based occupancy detection to disable cameras when toilets are in use
