@@ -1,0 +1,30 @@
+services:
+  openproject:
+    image: openproject/community:13
+    container_name: openproject_app
+    restart: always
+    env_file: ./env/.env
+    depends_on:
+      - db
+    networks:
+      - proxy_network
+    volumes:
+      - ./assets:/var/openproject/assets
+    environment:
+      PROXY: "true"
+      OPENPROJECT_HOST__NAME: "projects.guard-e-loo.co.uk"
+
+  db:
+    image: postgres:13
+    container_name: openproject_db
+    restart: always
+    env_file: ./env/.env
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+    networks:
+      - proxy_network
+
+networks:
+  proxy_network:
+    external: true
+    name: proxy_proxy_network

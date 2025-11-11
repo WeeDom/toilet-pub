@@ -6,6 +6,7 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PRODUCTION_DIR="$SCRIPT_DIR/production"
 STAGING_DIR="$SCRIPT_DIR/staging"
+OPENPROJECT_DIR="$SCRIPT_DIR/openproject"
 PROXY_DIR="$SCRIPT_DIR/proxy"
 
 # Colors for output
@@ -72,9 +73,14 @@ start_services() {
             log "Starting reverse proxy..."
             cd "$PROXY_DIR" && docker compose  up -d
             ;;
+        openproject)
+            log "Starting OpenProject services..."
+            cd "$OPENPROJECT_DIR" && docker compose  up -d
+            ;;
         all)
             log "Starting all services..."
             cd "$PRODUCTION_DIR" && docker compose  up -d
+            cd "$OPENPROJECT_DIR" && docker compose  up -d
             cd "$STAGING_DIR" && docker compose  up -d
             cd "$PROXY_DIR" && docker compose  up -d
             ;;
@@ -100,6 +106,10 @@ stop_services() {
         proxy)
             log "Stopping reverse proxy..."
             cd "$PROXY_DIR" && docker compose  down
+            ;;
+        openproject)
+            log "Stopping OpenProject services..."
+            cd "$OPENPROJECT_DIR" && docker compose  down
             ;;
         all)
             log "Stopping all services..."
@@ -137,6 +147,9 @@ show_status() {
     info "Reverse Proxy:"
     cd "$PROXY_DIR" && docker compose  ps
     echo ""
+    info "OpenProject Services:"
+    cd "$OPENPROJECT_DIR" && docker compose  ps
+    echo ""
 }
 
 show_logs() {
@@ -154,6 +167,10 @@ show_logs() {
         proxy)
             log "Proxy logs:"
             cd "$PROXY_DIR" && docker compose  logs -f
+            ;;
+        openproject)
+            log "OpenProject logs:"
+            cd "$OPENPROJECT_DIR" && docker compose  logs -f
             ;;
         *)
             error "Invalid environment: $env"
@@ -177,9 +194,15 @@ backup_database() {
             cd "$STAGING_DIR"
             docker compose  exec -T db mysqldump -u wpuser_staging -pwppass_staging wordpress_staging > "backups/staging_backup_$timestamp.sql"
             ;;
-        both)
+        openproject)
+            log "Backing up OpenProject database..."
+            cd "$OPENPROJECT_DIR"
+            docker compose  exec -T db pg_dump -U openproject openproject > "backups/openproject_backup_$timestamp.sql"
+            ;;
+        all)
             backup_database production
             backup_database staging
+            backup_database openproject
             ;;
         *)
             error "Invalid environment: $env"
@@ -268,6 +291,7 @@ update_all() {
     cd "$PRODUCTION_DIR" && docker compose  pull
     cd "$STAGING_DIR" && docker compose  pull
     cd "$PROXY_DIR" && docker compose  pull
+    cd "$OPENPROJECT_DIR" && docker compose  pull
 
     # Restart all services
     restart_services all

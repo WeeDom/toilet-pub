@@ -56,3 +56,8 @@ website/ssl/*.crt
 website/ssl/*.key
 website/ssl/*.pem
 
+## OpenProject ignores
+# Ignore database data and uploaded assets
+openproject/db_data/
+openproject/assets/
+
