@@ -3,13 +3,12 @@ services:
     image: mysql:8.0
     restart: always
     environment:
-      MYSQL_DATABASE: wordpress_staging
-      MYSQL_USER: wpuser_staging
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-wppass_staging}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpass_staging}
-      MYSQL_SSL_MODE: DISABLED
+      MYSQL_DATABASE: wordpress_prod
+      MYSQL_USER: wpuser_prod
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-wppass_prod}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpass_prod}
     volumes:
-      - db_staging_data:/var/lib/mysql
+      - db_prod_data:/var/lib/mysql
       - ./backups:/backups
     command: --default-authentication-plugin=mysql_native_password --innodb-buffer-pool-size=256M
     healthcheck:
@@ -19,28 +18,22 @@ services:
 
   wordpress:
     image: wordpress:php8.2-fpm
-    build:
-      context: .
-      dockerfile: Dockerfile
-    entrypoint: init-wordpress.sh
     restart: always
     depends_on:
       db:
         condition: service_healthy
     environment:
-      WORDPRESS_DB_HOST: db:3306?ssl=false
-      WORDPRESS_DB_NAME: wordpress_staging
-      WORDPRESS_DB_USER: wpuser_staging
-      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD:-wppass_staging}
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wordpress_prod
+      WORDPRESS_DB_USER: wpuser_prod
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD:-wppass_prod}
       WORDPRESS_CONFIG_EXTRA: |
-        define('WP_HOME', 'https://staging.guard-e-loo.co.uk');
-        define('WP_SITEURL', 'https://staging.guard-e-loo.co.uk');
+        define('WP_HOME', 'https://www.guard-e-loo.co.uk');
+        define('WP_SITEURL', 'https://www.guard-e-loo.co.uk');
         define('FORCE_SSL_ADMIN', true);
         define('WP_MEMORY_LIMIT', '256M');
-        define( 'MYSQL_CLIENT_FLAGS', 0 );
     volumes:
-      - ./wp-content:/var/www/html/wp-content
-      - wp_staging_data:/var/www/html
+      - wp_prod_data:/var/www/html
       - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
       - ./backups:/backups
     extra_hosts:
@@ -55,11 +48,10 @@ services:
       - "80"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      - wp_staging_data:/var/www/html:ro
-      - ./wp-content:/var/www/html/wp-content
+      - wp_prod_data:/var/www/html:ro
     depends_on:
       - wordpress
 
 volumes:
-  db_staging_data:
-  wp_staging_data:
+  db_prod_data:
+  wp_prod_data:
