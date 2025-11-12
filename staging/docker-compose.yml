@@ -33,8 +33,8 @@ services:
       WORDPRESS_DB_USER: wpuser_staging
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD:-wppass_staging}
       WORDPRESS_CONFIG_EXTRA: |
-        define('WP_HOME', 'https://staging.guard-e-loo.co.uk');
-        define('WP_SITEURL', 'https://staging.guard-e-loo.co.uk');
+        define('WP_HOME', 'https://www.guard-e-loo.co.uk');
+        define('WP_SITEURL', 'https://www.guard-e-loo.co.uk');
         define('FORCE_SSL_ADMIN', true);
         define('WP_MEMORY_LIMIT', '256M');
         define( 'MYSQL_CLIENT_FLAGS', 0 );
